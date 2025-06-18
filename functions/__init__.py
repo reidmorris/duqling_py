@@ -41,3 +41,4 @@ from .sulfur import sulfur
 from .twin_galaxies import twin_galaxies
 from .vinet import vinet
 from .wingweight import wingweight
+from .ebola import ebola
