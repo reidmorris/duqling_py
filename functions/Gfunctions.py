@@ -5,6 +5,13 @@ The G-function Functions.
 import numpy as np
 from ..utils import register_function
 
+def Gfunction(x, scale01=True, a=None):
+    if a is None:
+        p = x.size
+        a = np.arange(p) / 4
+    u = (np.abs(4 * x - 2) + a) / (1 + a)
+    return np.prod(u)
+
 def Gfunction6(x, scale01=True, a=None):
     """
     The G-function (6D)
@@ -143,6 +150,16 @@ def Gfunction18(x, scale01=True, a=None):
     return res
 
 # Register functions with metadata
+
+register_function(
+    fname="Gfunction",
+    input_dim=3,
+    input_cat=False,
+    response_type="uni",
+    stochastic="n",
+    input_range=np.zeros((3, 2)) + np.array([[0, 1]])
+)
+
 register_function(
     fname="Gfunction6",
     input_dim=6,

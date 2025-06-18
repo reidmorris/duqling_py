@@ -16,7 +16,7 @@ from .detpep_curve import detpep_curve, detpep8, welch20
 from .dms import dms_simple, dms_radial, dms_harmonic, dms_additive, dms_complicated
 from .dts_sirs import dts_sirs
 from .foursquare import foursquare
-from .Gfunctions import Gfunction6, Gfunction12, Gfunction18
+from .Gfunctions import Gfunction, Gfunction6, Gfunction12, Gfunction18
 from .grlee import grlee1, grlee2, grlee6
 from .ignition import ignition
 from .ishigami import ishigami
