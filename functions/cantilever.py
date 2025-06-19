@@ -66,7 +66,7 @@ def cantilever_D(x, scale01=True, L=100, D0=2.2535):
     term1 = 4*L**3/(E*w*t)
     term2 = np.sqrt(Y**2/t**4 + X**2/w**4)
     res = term1 * term2
-    res = max(res, D0)
+    res = min(res, D0)
     return res
 
 def cantilever_S(x, scale01=True):
@@ -124,7 +124,7 @@ def cantilever_S(x, scale01=True):
     t = x[5]
     
     res = 600*Y/(w*t**2) + 600*X/(w**2*t)
-    res = max(res, R)
+    res = min(res, R)
     return res
 
 # Register functions with metadata
