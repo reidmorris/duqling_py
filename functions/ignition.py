@@ -3,7 +3,7 @@ Mock Ignition Function.
 """
 
 import numpy as np
-from scipy.special import erf
+from scipy.stats import norm
 from ..utils import register_function
 
 def ignition(x, scale01=True):
@@ -36,7 +36,7 @@ def ignition(x, scale01=True):
     implosion yields. IEEE Transactions on Plasma Science, 48(1), 14-21.
     """
     r = np.sqrt(np.sum(x[:10]**2))
-    return np.log10(r**5 * (1 + 100000 * (1 + erf(10 * (r-2))) / 2))
+    return np.log10(r**5 * (1 + 100000 * (2 * norm.cdf(np.sqrt(2) * 10 * (r - 2)))))
 
 # Register function with metadata
 register_function(
