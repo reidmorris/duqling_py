@@ -11,6 +11,7 @@ import pandas as pd
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import importr
 from rpy2.robjects import pandas2ri, numpy2ri
+from rpy2.rinterface import rternalize
 
 # activate pandas and numpy conversion
 pandas2ri.activate()
@@ -106,6 +107,9 @@ class DuqlingInterface:
             X = robjects.NULL if X is None else X
             n_samples = robjects.NULL if n_samples is None else n_samples
             if kwargs:
+                for key, value in kwargs.items():
+                    if callable(value):
+                        kwargs[key] = rternalize(value)
                 result = self.gen_func(func_name, n_samples=n_samples, X=X, seed=seed, **kwargs)
             else:
                 result = self.gen_func(func_name, n_samples=n_samples, X=X, seed=seed)
