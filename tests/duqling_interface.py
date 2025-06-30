@@ -3,8 +3,7 @@ May have to execute the following code in terminal first:
 > R -e "devtools::install_github('knrumsey/duqling')"
 """
 
-from typing import Tuple, Dict, Optional
-import warnings
+from typing import Tuple, Optional
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -18,6 +17,9 @@ pandas2ri.activate()
 numpy2ri.activate()
 
 class DuqlingInterface:
+    """
+    Represents an interface that allows the R Duqling package to be callable in Python.
+    """
     def __init__(self, r_script_path:str="quack.R"):
         """
         Initialize the duqling interface.
@@ -35,7 +37,7 @@ class DuqlingInterface:
             robjects.r["source"](str(script_path))
             self.gen_func = robjects.globalenv["quack"]
         except Exception as e:
-            raise RuntimeError(f"Failed to initialize duqling interface: {e}")
+            raise RuntimeError(f"Failed to initialize duqling interface: {e}") from e
 
     def list_functions(self, **kwargs) -> pd.DataFrame:
         """
@@ -86,9 +88,10 @@ class DuqlingInterface:
             # not necessary, but makes it look nicer
             return {str(k): result[k] for k in result}
         except Exception as e:
-            raise ValueError(f"Function '{function_name}' not found: {e}")
-    
-    def generate_data(self, func_name:str, n_samples:int=None, X:Optional[np.array]=None, seed:Optional[int]=42, **kwargs) -> Tuple[np.array, np.array]:
+            raise ValueError(f"Function '{function_name}' not found: {e}") from e
+
+    def generate_data(self, func_name:str, n_samples:int=None, X:Optional[np.array]=None,
+                      seed:Optional[int]=42, **kwargs) -> Tuple[np.array, np.array]:
         """
         Generate data using a duqling function.
         
@@ -120,4 +123,4 @@ class DuqlingInterface:
             return X, y
 
         except Exception as e:
-            raise RuntimeError(f"Failed to generate data for '{func_name}': {e}")
+            raise RuntimeError(f"Failed to generate data for '{func_name}': {e}") from e
