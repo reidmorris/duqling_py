@@ -107,8 +107,9 @@ class DuqlingInterface:
             (X, y)
         """
         try:
-            X = robjects.NULL if X is None else X
+            X         = robjects.NULL if X         is None else X
             n_samples = robjects.NULL if n_samples is None else n_samples
+            seed      = robjects.NULL if seed      is None else seed
             if kwargs:
                 for key, value in kwargs.items():
                     if callable(value):
