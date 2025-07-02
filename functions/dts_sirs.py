@@ -2,14 +2,19 @@
 Discrete Time Stochastic SIRS Model with Demography.
 """
 
+import warnings
 import numpy as np
 from ..utils import register_function
 
 def dts_sirs(x, Tf=90, N0=1000):
+    if x[1] + x[2] >= 1:
+        warnings.warn(f"I0 will be reduced from {x[2]} to {1 - x[1]} due to S0 constraint")
+        x[2] = 1 - x[1]
+
     S = np.full(Tf, np.nan, dtype=int); I = S.copy(); R = S.copy(); N = S.copy()
     N[0] = N0
     S[0], I[0] = np.round(N0 * np.array(x[:2])).astype(int)
-    R[0] = np.maximum(0, N[0] - S[0] - I[0])
+    R[0] = N[0] - S[0] - I[0]
 
     for t in range(1, Tf):
         births  = np.random.poisson(x[4] * N[t-1])
