@@ -27,6 +27,7 @@ register_function(
     stochastic='n',
     input_range=np.array([
         [0.1,    0.4],
+        [0.1,    0.4],
         [0.05,   0.2],
         [0.41,   1],
         [0.0276, 0.1702],
