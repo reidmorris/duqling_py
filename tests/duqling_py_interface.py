@@ -6,8 +6,8 @@ from typing import Optional, Callable
 import numpy as np
 import pandas as pd
 
-from duqling_r_interface import DuqlingRInterface
-import duqling_py as functions
+from duqling_py.utils import quack
+from duqling_py import functions
 
 class DuqlingPyInterface:
     """
@@ -17,9 +17,6 @@ class DuqlingPyInterface:
         """
         Initialize the duqling interface.
         """
-        # Use the duqling R interface to retrieve function info (through the
-        # quack method) to obtain the most up-to-date info from the original repo.
-        self.duq_r = DuqlingRInterface()
 
     def quack(self,
               fname:         Optional[str]  = None,
@@ -32,7 +29,9 @@ class DuqlingPyInterface:
         """
         Wrapper for the `duqling::quack(...)` function from the original Duqling repository.
         """
-        return self.duq_r.quack(*locals())
+        args = locals()
+        args.pop('self')
+        return quack(**args)
 
     def duq(self, x:np.array, f:Callable|str, **kwargs) -> np.array:
         """
