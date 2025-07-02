@@ -33,7 +33,6 @@ def quack(
         response_type: Optional[str] = None,
         stochastic: Optional[str] = None,
         sorted: bool = True,
-        as_dataframe: bool = False
         ) -> Union[Dict, List, pd.DataFrame]:
     """Query info about functions in the registry."""
     # single function case
@@ -66,4 +65,4 @@ def quack(
     if sorted:
         result_list.sort(key=lambda x: (x["input_dim"], x["fname"]))
     
-    return pd.DataFrame(result_list) if as_dataframe else result_list
+    return pd.DataFrame(result_list)
