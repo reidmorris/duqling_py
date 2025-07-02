@@ -60,7 +60,15 @@ class DuqlingRInterface:
             result = self.duqling.quack(function_name)
             result = dict(result.items())
             # for some reason this doesn't get automatically parsed to np like the other objects
-            result['input_cat'] = numpy2ri.rpy2py(result['input_cat'])
+            result['input_cat'] = numpy2ri.rpy2py(result['input_cat'])[0]
+
+            # cast values to expected types
+            result['input_dim']     =  int(result['input_dim'][0])
+            result['input_cat']     = bool(result['input_cat'])
+            result['response_type'] =  str(result['response_type'][0])
+            if 'stochastic' in result:
+                result['stochastic']    =  str(result['stochastic'][0])
+
             # not necessary, but makes it look nicer
             return {str(k): result[k] for k in result}
         except Exception as e:
