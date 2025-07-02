@@ -9,14 +9,12 @@ import pandas as pd
 from duqling_py.utils import quack
 from duqling_py import functions
 
-class DuqlingPyInterface:
+class Duqling:
     """
     Represents an interface that allows the R Duqling package to be callable in Python.
     """
     def __init__(self):
-        """
-        Initialize the duqling interface.
-        """
+        """Initialize the duqling interface."""
 
     def quack(self,
               fname:         Optional[str]  = None,
