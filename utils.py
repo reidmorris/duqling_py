@@ -45,6 +45,7 @@ def quack(
     filtered_registry = function_registry.copy()
     
     if input_dim is not None:
+        input_dim = [input_dim] if isinstance(input_dim, (int, float)) else input_dim
         filtered_registry = {k: v for k, v in filtered_registry.items() 
                            if v["input_dim"] in input_dim}
     
@@ -64,5 +65,5 @@ def quack(
     
     if sorted:
         result_list.sort(key=lambda x: (x["input_dim"], x["fname"]))
-    
-    return pd.DataFrame(result_list)
+
+    return pd.DataFrame(result_list).drop('input_range', axis=1)
