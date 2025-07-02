@@ -5,10 +5,10 @@ This package is a Python implementation of the reproducable UQ research R packag
 ## Description
 
 This package includes two Python interfaces that should be used to interact with the library of test functions:
-1. [DuqlingPyInterface](/duqling_py/tests/duqling_py_interface.py): to interact with the Python-based Duqling package
-2. [DuqlingRInterface](/duqling_py/tests/duqling_r_interface.py): to interact with the R-based Duqling package
+1. [Duqling](/duqling_py/tests/duqling.py): to interact with the Python-based Duqling package
+2. [DuqlingR](/duqling_py/tests/duqling_r.py): to interact with the R-based Duqling package
 
-Both of these interfaces implement the `quack` and `duq` functions as to match the behavior of the original R package.
+Both of these interfaces implement the `quack` and `duq` functions as to match the behavior of the original R package. They can be used interchangeably, although the Python-based package offers a substantial speedup.
 
 ## Quick start
 

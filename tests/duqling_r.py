@@ -14,7 +14,7 @@ from rpy2.rinterface import rternalize
 pandas2ri.activate()
 numpy2ri.activate()
 
-class DuqlingRInterface:
+class DuqlingR:
     """
     Represents an interface that allows the R Duqling package to be callable in Python.
     """
