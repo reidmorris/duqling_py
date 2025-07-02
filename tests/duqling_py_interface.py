@@ -1,13 +1,13 @@
 """
-A Python interface for the original Duqling package written in R.
+A Python interface that acts identically to the original Duqling package written in R.
 """
 
 from typing import Optional, Callable
 import numpy as np
 import pandas as pd
 
-import duqling_py.functions as functions
 from duqling_r_interface import DuqlingRInterface
+import duqling_py as functions
 
 class DuqlingPyInterface:
     """
@@ -20,7 +20,7 @@ class DuqlingPyInterface:
         # Use the duqling R interface to retrieve function info (through the
         # quack method) to obtain the most up-to-date info from the original repo.
         self.duq_r = DuqlingRInterface()
-        
+
     def quack(self,
               fname:         Optional[str]  = None,
               input_dim:     Optional[int]  = None,

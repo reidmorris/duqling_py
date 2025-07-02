@@ -65,7 +65,7 @@ class DuqlingRInterface:
             return {str(k): result[k] for k in result}
         except Exception as e:
             raise ValueError(f"Function '{function_name}' not found: {e}") from e
-        
+
     def quack(self,
               fname:         Optional[str]  = None,
               input_dim:     Optional[int]  = None,
@@ -81,7 +81,8 @@ class DuqlingRInterface:
             fname: The name of a function in this package.
             input_dim: A vector specifying the input dimension of the function.
             input_cat: Logical, should functions with categorical inputs be included?
-            response_type: One of ["all", "uni", "multi", "func"] specifying which response type is requested.
+            response_type: One of ["all", "uni", "multi", "func"] specifying which
+                           response type is requested.
             stochastic: Is function response stochastic?
             sorted: Should results be sorted (by input dimension and then alphabetically).
 
@@ -101,7 +102,9 @@ class DuqlingRInterface:
         else:
             result = robjects.r("duqling::quack()")
         # if an error occurs, the thrown message will be returned in an np array
-        return pandas2ri.rpy2py(result) if isinstance(result, robjects.vectors.DataFrame) else result
+        if isinstance(result, robjects.vectors.DataFrame):
+            return pandas2ri.rpy2py(result)
+        return result
 
     def duq(self, x:np.array, f:Callable|str, **kwargs) -> np.array:
         """
