@@ -45,3 +45,24 @@ class Duqling:
         if isinstance(f, str):
             f = getattr(functions, f)
         return f(x, **kwargs)
+    
+    def batch_duq(self, X:np.array, f:Callable|str, **kwargs) -> np.array:
+        """
+        Call functions from the duqling namespace on a batch of samples
+
+        Args:
+            x:        An nxp matrix of inputs.
+            f:        A function name or a function, usually from the duqling package.
+            **kwargs: Additional kwargs pass to f.
+        Returns:
+            The output of the function f when called on the matrix of samples x.
+        """
+        if isinstance(f, str):
+            f = getattr(functions, f)
+        Y = np.apply_along_axis(f, axis=1, arr=X).T
+        # messy hard coded shape casting to match R's `apply` function
+        if Y.ndim == 2 and Y.shape[0] == 1:
+            return Y[0]
+        elif Y.ndim == 3:
+            return Y.reshape(-1, *Y.shape[2:])
+        return Y

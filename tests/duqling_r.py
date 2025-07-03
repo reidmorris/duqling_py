@@ -131,3 +131,12 @@ class DuqlingR:
         kwargs = {k:rternalize(v) if callable(v) else v for k,v in kwargs.items()}
         result = self.duqling.duq(x_r, f_r, **kwargs)
         return result if isinstance(result, np.ndarray) else numpy2ri.rpy2py(result)
+
+    def batch_duq(self, X:np.array, f:Callable|str, **kwargs) -> np.array:
+        X_r = numpy2ri.py2rpy(np.atleast_2d(X))
+        f_r = rternalize(f) if callable(f) else f
+        kwargs = {k: rternalize(v) if callable(v) else v for k, v in kwargs.items()}
+        apply_func = robjects.r['apply']
+        duq_func = self.duqling.duq
+        result = apply_func(X_r, 1, duq_func, f_r, **kwargs)
+        return result if isinstance(result, np.ndarray) else numpy2ri.rpy2py(result)
