@@ -1,5 +1,8 @@
 # PyDuqling
 
+[![License: GPL
+v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 This package is a Python implementation of the reproducable UQ research R package, [Duqling](https://github.com/knrumsey/duqling), by K. Rumsey et al.
 
 ## Description
@@ -15,14 +18,14 @@ Both of these interfaces implement the `quack` and `duq` functions as to match t
 ### Instantiate the Duqling interface
 ``` python
 from duqling import Duqling
-duq = Duqling()
+duqling = Duqling()
 ```
 
 ### Test Functions in the Library
 A master list of all functions found in the `duqling` package can be
 found with the command
 ``` python
-duq.quack()
+duqling.quack()
 ```
 ##### **Output**:
 || fname                 |   input_dim | input_cat   | response_type   | stochastic   |
@@ -95,7 +98,7 @@ duq.quack()
 ### Function search using filtering criteria
 A list of all functions meeting certain criterion can be found with the command
 ``` python
-duq.quack(input_dim=range(4,8), stochastic="n")
+duqling.quack(input_dim=range(4,8), stochastic="n")
 ```
 #### **Output:**
 |    | fname              |   input_dim | input_cat   | response_type   | stochastic   |
@@ -122,7 +125,7 @@ duq.quack(input_dim=range(4,8), stochastic="n")
 ### Query function info
 A detailed description of each function (the `borehole()` function, for example) can be found with the command
 ``` python
-duq.quack("borehole")
+duqling.quack("borehole")
 ```
 #### **Output**:
 ```python
@@ -140,11 +143,34 @@ duq.quack("borehole")
                         [9.8550e+03, 1.2045e+04]])}
 ```
 
-<!-- ## Generate data for a specific function
+<br>
 
-``` python
-duq.generate_data("borehole", n_samples=1, seed=42)
-#> (array([[0.91480604, 0.93707541, 0.28613953, 0.83044763, 
-#           0.64174552, 0.51909595, 0.73658831, 0.1346666 ]]),
-#>  array([135.16945286]))
+### Call test functions
+
+Use the `duq` method to call a function on a single input. This function can be the string name of a supported test function in this package, or a custom callable function.
+
+For example,
+```python
+func_info = duqling.quack('borehole')
+input_dim = func_info['input_dim']
+x = np.random.rand(input_dim)
+y = duqling.duq(x, 'borehole')
+```
+
+Or, equivalently,
+```python
+from duqling_py.functions import borehole
+
+y = duqling.duq(x, borehole)
+```
+
+Use the `batch_duq` method to call a function on a batch of input samples. 
+
+```python
+NUM_SAMPLES = 10
+
+func_info = duqling.quack('borehole')
+input_dim = func_info['input_dim']
+X = np.random.rand(NUM_SAMPLES, input_dim)
+Y = duqling.batch_duq(X, 'borehole')
 ```
