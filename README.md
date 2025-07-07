@@ -1,7 +1,6 @@
 # PyDuqling
 
-[![License: GPL
-v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 This package is a Python implementation of the reproducable UQ research R package, [Duqling](https://github.com/knrumsey/duqling), by K. Rumsey et al.
 
