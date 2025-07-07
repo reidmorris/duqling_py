@@ -8,8 +8,8 @@ from ..utils import register_function
 
 def dts_sirs(x, Tf=90, N0=1000):
     if x[0] + x[1] > 1:
-        warnings.warn(f"I0 will be reduced from {x[1]} to {1 - x[0]} due to S0 constraint")
-        x[1] = 1 - x[0]
+        warnings.warn(f"S0 will be reduced from {x[0]} to {1 - x[1]} due to I0 constraint")
+        x[0] = 1 - x[1]
 
     S = np.full(Tf, np.nan, dtype=int); I = S.copy(); R = S.copy(); N = S.copy()
     N[0] = N0
