@@ -2,27 +2,25 @@
 Discrete Time Stochastic SIRS Model with Demography.
 """
 
-import warnings
 import numpy as np
 from ..utils import register_function
 
-def dts_sirs(x, Tf=90, N0=1000):
-    if x[0] + x[1] > 1:
-        warnings.warn(f"S0 will be reduced from {x[0]} to {1 - x[1]} due to I0 constraint")
-        x[0] = 1 - x[1]
+def dts_sirs(x, scale01=True, seed=None, Tf=90, N0=1000):
+    rng = np.random.default_rng(seed)
 
     S = np.full(Tf, np.nan, dtype=int); I = S.copy(); R = S.copy(); N = S.copy()
     N[0] = N0
-    S[0], I[0] = np.round(N0 * np.array(x[:2])).astype(int)
+    I[0] = np.round(x[0] * N0).astype(int)
+    S[0] = np.floor(x[1] * (N0 - I[0])).astype(int)
     R[0] = N[0] - S[0] - I[0]
 
     for t in range(1, Tf):
-        births  = np.random.poisson(x[4] * N[t-1])
-        deaths  = np.random.binomial([S[t-1], I[t-1], R[t-1]], x[5:8])
-        infect  = np.random.binomial(S[t-1] - deaths[0],
+        births  = rng.poisson(x[4] * N[t-1])
+        deaths  = rng.binomial([S[t-1], I[t-1], R[t-1]], x[5:8])
+        infect  = rng.binomial(S[t-1] - deaths[0],
                                         1 - np.exp(-x[2] * I[t-1] / N[t-1]))
-        recove  = np.random.binomial(I[t-1] - deaths[1], x[3])
-        resusc  = np.random.binomial(R[t-1] - deaths[2], x[8])
+        recove  = rng.binomial(I[t-1] - deaths[1], x[3])
+        resusc  = rng.binomial(R[t-1] - deaths[2], x[8])
 
         S[t] = S[t-1] + births - deaths[0] - infect + resusc
         I[t] = I[t-1]          - deaths[1] + infect - recove
