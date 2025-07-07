@@ -31,12 +31,12 @@ class Duqling:
         args.pop('self')
         return quack(**args)
 
-    def duq(self, x:np.array, f:Callable|str, **kwargs) -> np.array:
+    def duq(self, X:np.array, f:Callable|str, **kwargs) -> np.array:
         """
         Call functions from the duqling namespace
 
         Args:
-            x:        An nxp matrix of inputs.
+            X:        An nxp matrix of inputs.
             f:        A function name or a function, usually from the duqling package.
             **kwargs: Additional kwargs pass to f.
         Returns:
@@ -44,7 +44,7 @@ class Duqling:
         """
         if isinstance(f, str):
             f = getattr(functions, f)
-        return f(x, **kwargs)
+        return self.batch_duq(X, f, **kwargs)
     
     def batch_duq(self, X:np.array, f:Callable|str, **kwargs) -> np.array:
         """

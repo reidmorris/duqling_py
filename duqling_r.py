@@ -114,7 +114,7 @@ class DuqlingR:
             return pandas2ri.rpy2py(result)
         return result
 
-    def duq(self, x:np.array, f:Callable|str, **kwargs) -> np.array:
+    def duq(self, X:np.array, f:Callable|str, **kwargs) -> np.array:
         """
         Call functions from the duqling namespace
 
@@ -126,13 +126,6 @@ class DuqlingR:
         Returns:
             The output of the function f when called on the matrix of samples x.
         """
-        x_r = numpy2ri.py2rpy(np.atleast_2d(x))
-        f_r = rternalize(f) if callable(f) else f
-        kwargs = {k:rternalize(v) if callable(v) else v for k,v in kwargs.items()}
-        result = self.duqling.duq(x_r, f_r, **kwargs)
-        return result if isinstance(result, np.ndarray) else numpy2ri.rpy2py(result)
-
-    def batch_duq(self, X:np.array, f:Callable|str, **kwargs) -> np.array:
         X_r = numpy2ri.py2rpy(np.atleast_2d(X))
         f_r = rternalize(f) if callable(f) else f
         kwargs = {k: rternalize(v) if callable(v) else v for k, v in kwargs.items()}
