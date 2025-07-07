@@ -8,6 +8,10 @@ to scale inputs from [0,1] to their native parameter ranges.
 
 __version__ = "0.1.0"
 
+from .duqling import Duqling
+
+from .duqling_r import DuqlingR
+
 from .functions import (
     banana,
     beam_deflection,
