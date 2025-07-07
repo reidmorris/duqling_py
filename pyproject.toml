@@ -1,0 +1,14 @@
+[project]
+name = "duqling_py"
+version = "0.1.0"
+description = "Python interface to Duqling, a UQ test function library"
+readme = "README.md"
+authors = [
+  { name = "Reid Morris", email = "reidmorris0419@gmail.com" }
+]
+license = { text = "GPL-3.0" }
+dependencies = ["numpy", "pandas"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
