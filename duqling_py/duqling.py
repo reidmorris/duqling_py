@@ -40,7 +40,7 @@ class Duqling:
             f:        A function name or a function, usually from the duqling package.
             **kwargs: Additional kwargs pass to f.
         Returns:
-            The output of the function f when called on the matrix of samples x.
+            The output of the function f when called on the matrix of samples X.
         """
         if isinstance(f, str):
             f = getattr(functions, f)

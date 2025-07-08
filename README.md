@@ -146,30 +146,20 @@ duqling.quack("borehole")
 
 ### Call test functions
 
-Use the `duq` method to call a function on a single input. This function can be the string name of a supported test function in this package, or a custom callable function.
+Use the `duq` method to call a function on a batch of input samples. This function can be the string name of a supported test function in this package, or a custom callable function.
 
 For example,
 ```python
+NUM_SAMPLES = 10
 func_info = duqling.quack('borehole')
 input_dim = func_info['input_dim']
-x = np.random.rand(input_dim)
-y = duqling.duq(x, 'borehole')
+X = np.random.rand(NUM_SAMPLES, input_dim)
+Y = duqling.batch_duq(X, 'borehole')
 ```
 
 Or, equivalently,
 ```python
 from duqling_py.functions import borehole
 
-y = duqling.duq(x, borehole)
-```
-
-Use the `batch_duq` method to call a function on a batch of input samples. 
-
-```python
-NUM_SAMPLES = 10
-
-func_info = duqling.quack('borehole')
-input_dim = func_info['input_dim']
-X = np.random.rand(NUM_SAMPLES, input_dim)
-Y = duqling.batch_duq(X, 'borehole')
+Y = duqling.duq(X, borehole)
 ```

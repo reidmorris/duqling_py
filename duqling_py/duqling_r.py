@@ -119,12 +119,12 @@ class DuqlingR:
         Call functions from the duqling namespace
 
         Args:
-            x:        An nxp matrix of inputs.
+            X:        An nxp matrix of inputs.
             f:        A function name or a function, usually from the duqling package.
             scale01:  When TRUE, inputs are expected on the (0, 1) scale.
             **kwargs: Additional kwargs pass to f.
         Returns:
-            The output of the function f when called on the matrix of samples x.
+            The output of the function f when called on the matrix of samples X.
         """
         X_r = numpy2ri.py2rpy(np.atleast_2d(X))
         f_r = rternalize(f) if callable(f) else f
