@@ -44,7 +44,8 @@ class Duqling:
         """
         if isinstance(f, str):
             f = getattr(functions, f)
-        Y = np.apply_along_axis(lambda x: f(x, **kwargs), axis=1, arr=X).T
+        Y = np.apply_along_axis(lambda x: f(x, **kwargs), axis=1, arr=X)
+        Y = np.transpose(Y)
         # messy hard coded shape casting to match R's `apply` function
         if Y.ndim == 2 and Y.shape[0] == 1:
             return Y[0]
