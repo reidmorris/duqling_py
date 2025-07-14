@@ -154,7 +154,7 @@ NUM_SAMPLES = 10
 func_info = duqling.quack('borehole')
 input_dim = func_info['input_dim']
 X = np.random.rand(NUM_SAMPLES, input_dim)
-Y = duqling.batch_duq(X, 'borehole')
+Y = duqling.duq(X, 'borehole')
 ```
 
 Or, equivalently,
