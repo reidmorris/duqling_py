@@ -7,8 +7,8 @@ This package is a Python implementation of the reproducable UQ research R packag
 ## Description
 
 This package includes two Python interfaces that should be used to interact with the library of test functions:
-1. [Duqling](/tests/duqling.py): to interact with the Python-based Duqling package
-2. [DuqlingR](/tests/duqling_r.py): to interact with the R-based Duqling package
+1. [Duqling](/duqling_py/duqling.py): to interact with the Python-based Duqling package
+2. [DuqlingR](/duqling_py/duqling_r.py): to interact with the R-based Duqling package
 
 Both of these interfaces implement the `quack` and `duq` functions as to match the behavior of the original R package. They can be used interchangeably, although the Python-based package offers a substantial speedup.
 
@@ -154,7 +154,7 @@ NUM_SAMPLES = 10
 func_info = duqling.quack('borehole')
 input_dim = func_info['input_dim']
 X = np.random.rand(NUM_SAMPLES, input_dim)
-Y = duqling.batch_duq(X, 'borehole')
+Y = duqling.duq(X, 'borehole')
 ```
 
 Or, equivalently,
