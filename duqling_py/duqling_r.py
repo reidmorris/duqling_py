@@ -130,4 +130,5 @@ class DuqlingR:
         apply_func = robjects.r['apply']
         duq_func = self.duqling.duq
         result = apply_func(X_r, 1, duq_func, f_r, **kwargs)
-        return result if isinstance(result, np.ndarray) else numpy2ri.rpy2py(result)
+        result = result if isinstance(result, np.ndarray) else numpy2ri.rpy2py(result)
+        return pd.DataFrame(result)
