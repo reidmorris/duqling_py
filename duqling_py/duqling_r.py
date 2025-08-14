@@ -10,11 +10,7 @@ from rpy2.robjects.packages import importr
 from rpy2.robjects import pandas2ri, numpy2ri, conversion
 from rpy2.rinterface import rternalize
 
-conversion.set_conversion(
-    conversion.get_conversion()
-    .chain(pandas2ri.converter)
-    .chain(numpy2ri.converter)
-)
+conversion.set_conversion(conversion.get_conversion() + pandas2ri.converter + numpy2ri.converter)
 
 class DuqlingR:
     """
