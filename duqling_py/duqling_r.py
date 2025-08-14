@@ -56,7 +56,7 @@ class DuqlingR:
         """
         try:
             result = self.duqling.quack(function_name)
-            result = dict(result.items())
+            result = dict(zip(result.names(), result))
             # for some reason this doesn't get automatically parsed to np like the other objects
             result['input_cat'] = numpy2ri.rpy2py(result['input_cat'])[0]
 
@@ -65,7 +65,7 @@ class DuqlingR:
             result['input_cat']     = bool(result['input_cat'])
             result['response_type'] =  str(result['response_type'][0])
             if 'stochastic' in result:
-                result['stochastic']    =  str(result['stochastic'][0])
+                result['stochastic'] = str(result['stochastic'][0])
 
             # not necessary, but makes it look nicer
             return {str(k): result[k] for k in result}
@@ -107,10 +107,7 @@ class DuqlingR:
             result = robjects.r(call_str)
         else:
             result = robjects.r("duqling::quack()")
-        # if an error occurs, the thrown message will be returned in an np array
-        if isinstance(result, robjects.vectors.DataFrame):
-            return pandas2ri.rpy2py(result)
-        return result
+        return pd.DataFrame(result)
 
     def duq(self, X:np.array, f:Callable|str, **kwargs) -> np.array:
         """
@@ -130,5 +127,4 @@ class DuqlingR:
         apply_func = robjects.r['apply']
         duq_func = self.duqling.duq
         result = apply_func(X_r, 1, duq_func, f_r, **kwargs)
-        result = result if isinstance(result, np.ndarray) else numpy2ri.rpy2py(result)
-        return pd.DataFrame(result)
+        return result
