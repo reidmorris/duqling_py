@@ -7,12 +7,14 @@ import numpy as np
 import pandas as pd
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import importr
-from rpy2.robjects import pandas2ri, numpy2ri
+from rpy2.robjects import pandas2ri, numpy2ri, conversion
 from rpy2.rinterface import rternalize
 
-# activate pandas and numpy conversion
-pandas2ri.activate()
-numpy2ri.activate()
+conversion.set_conversion(
+    conversion.get_conversion()
+    .chain(pandas2ri.converter)
+    .chain(numpy2ri.converter)
+)
 
 class DuqlingR:
     """
