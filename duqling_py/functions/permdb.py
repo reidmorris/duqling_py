@@ -14,7 +14,7 @@ def permdb(x, scale01=True, d=16, beta=0.5):
     inner = np.sum((jj**ii[:, None] + beta) * ((xxmat / jj)**ii[:, None] - 1), axis=1)
     outer = np.sum(inner**2)
 
-    return outer
+    return outer / (d**(2 * d + 1))
 
 register_function(
     fname='permdb',
