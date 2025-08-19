@@ -26,7 +26,7 @@ from .lim import lim_polynomial, lim_non_polynomial
 from .micwicz import multivalley
 from .ocean_circ import ocean_circ
 from .otl_circuit import circuit
-from .onehundred import onehundred
+from .onehundred import onehundred, d_onehundred
 from .oakley_ohagan import oo15
 from .park import park4, park4_low_fidelity
 from .permdb import permdb

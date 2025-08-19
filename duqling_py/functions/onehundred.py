@@ -2,6 +2,7 @@
 The 100D Function.
 """
 
+import warnings
 import numpy as np
 from ..utils import register_function
 
@@ -61,7 +62,6 @@ def onehundred(x, scale01=True, M=100):
     res = term1 + term2 + term3 + term4
     return res
 
-# Register function with metadata
 register_function(
     fname="onehundred",
     input_dim=100,
@@ -69,4 +69,78 @@ register_function(
     response_type="uni",
     stochastic="n",
     input_range=np.column_stack((np.ones(100), np.ones(100) * 2 + (np.arange(100) == 19)))
+)
+
+def d_onehundred(x, scale01: bool = True, M: int = 100) -> np.ndarray:
+    """
+    Gradient of the 100D Function
+
+    Input dimension: 100
+    Output dimension: 100 (first M entries populated)
+
+    Parameters
+    ----------
+    x : array_like
+        Inputs of dimension (at least) 100.
+    scale01 : bool, optional
+        When True, inputs are expected on [0,1] and are internally scaled.
+    M : int, optional
+        Number of active variables (default 100; must be at least 55).
+
+    Returns
+    -------
+    np.ndarray
+        Gradient vector of length M.
+    """
+    if M < 55:
+        warnings.warn("M must be at least 55; setting M=55", RuntimeWarning)
+        M = 55
+
+    # Scaling bounds
+    lb = np.ones(100, dtype=np.float64)
+    ub = np.full(100, 2.0, dtype=np.float64)
+    ub[19] = 3.0  # x20 upper bound is 3
+
+    if scale01:
+        # Scale first 100 dims from [0,1] to [lb, ub]
+        x[:100] = x[:100] * (ub - lb) + lb
+
+    # Allocate result
+    res = np.empty(M, dtype=np.float64)
+
+    # Linear gradient terms
+    for k in range(1, M + 1):
+        xi = x[k - 1]
+        t1 = -5 * k / M
+        t2 = 3 * k * (xi ** 2) / M
+        denom = xi ** 3 + xi
+        t3 = k * (4 * (xi ** 2) + 2) / denom / (3 * M)
+        res[k - 1] = t1 + t2 + t3
+
+    # Interaction terms
+    res[0]  += x[1] ** 2
+    res[1]  += 2.0 * x[0] * x[1] + x[3]
+    res[2]  -= x[4]
+    res[3]  += x[1]
+    res[4]  -= x[2]
+    if M >= 50:
+        res[49] += x[53] ** 2
+    if M >= 51:
+        res[50] += 1.0
+    if M >= 54:
+        res[53] += 2.0 * x[53] * x[49]
+
+    # Chain rule
+    if scale01:
+        res *= (ub[:M] - lb[:M])
+
+    return res
+
+register_function(
+    fname="d_onehundred",
+    input_dim=100,
+    input_cat=False,
+    response_type="multi",
+    stochastic="n",
+    input_range=np.column_stack([np.ones(100), np.where(np.arange(100) == 19, 3.0, 2.0)])
 )

@@ -34,7 +34,7 @@ from .functions import (
     lim_polynomial, lim_non_polynomial,
     multivalley,
     ocean_circ,
-    onehundred,
+    onehundred, d_onehundred,
     park4, park4_low_fidelity,
     piston, stochastic_piston,
     pollutant, pollutant_uni,
