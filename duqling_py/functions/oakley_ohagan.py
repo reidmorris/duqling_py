@@ -39,7 +39,7 @@ def oo15(x, scale01=True):
     term3 = a3 @ np.cos(xx)
     term4 = xx.T @ M @ xx
 
-    return float(term1 + term2 + term3 + term4)
+    return (term1 + term2 + term3 + term4)[0]
 
 register_function(
     fname='oo15',
