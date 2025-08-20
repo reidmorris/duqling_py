@@ -42,7 +42,16 @@ class Duqling:
         Returns:
             The output of the function f when called on the matrix of samples X.
         """
+        if X.ndim != 2:
+            raise ValueError(f"`X` must be 2D array-like, got ndim={X.ndim}")
         if isinstance(f, str):
+            input_length = X.shape[1]
+            expected_length = self.quack(f)['input_dim']
+            if input_length != expected_length:
+                raise ValueError(
+                    f"{f} expects samples of length {expected_length}, "
+                    f"but received {input_length}. X.shape={X.shape}"
+                )
             f = getattr(functions, f)
         Y = np.apply_along_axis(lambda x: f(x, **kwargs), axis=1, arr=X)
         Y = np.transpose(Y)
