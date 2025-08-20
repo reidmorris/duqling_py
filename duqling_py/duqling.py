@@ -25,7 +25,7 @@ class Duqling:
               sorted:                 bool  = True
               ) -> pd.DataFrame:
         """
-        Wrapper for the `duqling::quack(...)` function from the original Duqling repository.
+        Retrieve information about a function, or query for all functions that meet some criteria.
         """
         args = locals()
         args.pop('self')
