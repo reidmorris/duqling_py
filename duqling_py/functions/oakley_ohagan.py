@@ -2,7 +2,7 @@ import numpy as np
 from ..utils import register_function
 
 def oo15(x, scale01=True):
-    x = np.asarray(x)
+    x = x.copy()
 
     if scale01:
         x[:15] = x[:15] * 6 - 3

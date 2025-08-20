@@ -92,6 +92,7 @@ def d_onehundred(x, scale01: bool = True, M: int = 100) -> np.ndarray:
     np.ndarray
         Gradient vector of length M.
     """
+    x = x.copy()
     if M < 55:
         warnings.warn("M must be at least 55; setting M=55", RuntimeWarning)
         M = 55

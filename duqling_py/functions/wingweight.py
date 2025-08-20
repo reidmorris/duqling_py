@@ -65,6 +65,7 @@ def wingweight(x, scale01=True):
             [1700, 2500],
             [0.025, 0.08]
         ])
+        x = x.copy()
         x = x[:10] * (RR[:, 1] - RR[:, 0]) + RR[:, 0]
     
     Sw = x[0]

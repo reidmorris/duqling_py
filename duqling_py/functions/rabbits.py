@@ -2,7 +2,7 @@ import numpy as np
 from ..utils import register_function
 
 def rabbits(x, scale01=True):
-    x = np.asarray(x, dtype=np.float64)
+    x = x.copy()
 
     if scale01:
         bounds = np.array([

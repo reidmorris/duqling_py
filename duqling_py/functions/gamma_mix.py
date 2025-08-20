@@ -3,6 +3,7 @@ from scipy.stats import gamma
 from ..utils import register_function
 
 def gamma_mix(x, scale01=True):
+    x = x.copy()
     bounds = np.array([
         [0,   50],
         [1,   10],
