@@ -2,6 +2,7 @@
 Stochastic Ocean Circulation Model.
 """
 
+from typing import Optional
 import numpy as np
 from ..utils import register_function
 
@@ -576,7 +577,8 @@ OXY_DATA = np.array([[232.38053   , 231.14017   , 229.3396    , 228.474645  ,
                     240.09987   , 241.486525  , 237.87384   , 241.26343   ,
                     241.26343   ]])
 
-def ocean_circ(x, scale01=True, NPATHS=1):
+def ocean_circ(x, scale01=True, NPATHS=1, seed: Optional[int]=None,
+               rng: Optional[np.random.Generator]=None):
     """
     Stochastic Ocean Circulation Model
     
@@ -613,6 +615,8 @@ def ocean_circ(x, scale01=True, NPATHS=1):
     with approximated likelihoods via the Bernoulli factory." Journal of the American 
     Statistical Association 109.507 (2014): 944-954.
     """
+    rng = np.random.default_rng(seed) if rng is None else rng
+
     # Define domain parameters
     xy = np.array([-34.0, 11.0, -32.0, -3.0])
     lat0 = -17.5
@@ -639,10 +643,10 @@ def ocean_circ(x, scale01=True, NPATHS=1):
     KY = x[3] * 900 + 100
     
     # Call the simulator
-    sim_results = _fk_simulator(domain, np.array([[long, lat]]), U, V, KX, KY, OXY, NPATHS)
+    sim_results = _fk_simulator(domain, np.array([[long, lat]]), U, V, KX, KY, OXY, NPATHS, rng)
     return np.mean(sim_results)
 
-def _fk_simulator(domain, sites, U, V, KX, KY, OXY, NPATHS):
+def _fk_simulator(domain, sites, U, V, KX, KY, OXY, NPATHS, rng: np.random.Generator):
     """
     Private Ocean Circulation simulator.
     
@@ -697,8 +701,8 @@ def _fk_simulator(domain, sites, U, V, KX, KY, OXY, NPATHS):
                 vc = V[ix, jx]
                 
                 # Euler step with random diffusion
-                xn = xc + HH * uc + np.sqrt(HH) * np.sqrt(2 * KX) * np.random.normal()
-                yn = yc + HH * vc + np.sqrt(HH) * np.sqrt(2 * KY) * np.random.normal()
+                xn = xc + HH * uc + np.sqrt(HH) * np.sqrt(2 * KX) * rng.normal()
+                yn = yc + HH * vc + np.sqrt(HH) * np.sqrt(2 * KY) * rng.normal()
                 
                 xc = xn
                 yc = yn

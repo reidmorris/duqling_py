@@ -2,11 +2,12 @@
 Discrete Time Stochastic SIRS Model with Demography.
 """
 
+from typing import Optional
 import numpy as np
 from ..utils import register_function
 
-def dts_sirs(x, scale01=True, seed=None, Tf=90, N0=1000):
-    rng = np.random.default_rng(seed)
+def dts_sirs(x, scale01=True, Tf=90, N0=1000, seed: Optional[int]=None, rng: Optional[np.random.Generator] = None):
+    rng = np.random.default_rng(seed) if rng is None else rng
 
     S = np.full(Tf, np.nan, dtype=int); I = S.copy(); R = S.copy(); N = S.copy()
     N[0] = N0

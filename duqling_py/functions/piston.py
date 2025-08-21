@@ -2,6 +2,7 @@
 Piston Simulation Functions.
 """
 
+from typing import Optional
 import numpy as np
 from ..utils import register_function
 
@@ -82,7 +83,8 @@ def piston(x, scale01=True):
     C = 2 * np.pi * np.sqrt(fact1 / fact2)
     return C
 
-def stochastic_piston(x, scale01=True, Ta_generate=None, P0_generate=None):
+def stochastic_piston(x, scale01=True, Ta_generate=None, P0_generate=None, seed: Optional[int] = None,
+                      rng: Optional[np.random.Generator] = None):
     """
     Stochastic Piston Simulation Function
     
@@ -135,10 +137,11 @@ def stochastic_piston(x, scale01=True, Ta_generate=None, P0_generate=None):
     control of quality and reliability. Pacific Grove, CA: Duxbury press.
     """
     # Default generating functions if not provided
+    rng = np.random.default_rng(seed) if rng is None else rng
     if Ta_generate is None:
-        Ta_generate = lambda: np.random.beta(10, 15)
+        Ta_generate = lambda: rng.beta(10, 15)
     if P0_generate is None:
-        P0_generate = lambda: np.random.uniform(0.49, 0.51)
+        P0_generate = lambda: rng.uniform(0.49, 0.51)
     
     Ta = Ta_generate()
     P0 = P0_generate()
