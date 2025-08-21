@@ -7,13 +7,12 @@ from duqling_py.duqling import Duqling as DuqlingPy
 from duqling_py.duqling_r import DuqlingR
 from duqling_py.sampling import LHSSampler
 
-NUM_SAMPLES = int(os.getenv("DUQLING_TEST_SAMPLES", "1000"))
-
 duq_r = DuqlingR()
 duq_py = DuqlingPy()
 lhs = LHSSampler()
-all_fnames = list(duq_r.quack(stochastic='n').fname)
-all_fnames.append('stochastic_piston') # `stochastic_piston` is basically deterministic
+
+deterministic_fnames = list(duq_r.quack(stochastic='n').fname)
+deterministic_fnames.append('stochastic_piston') # `stochastic_piston` is basically deterministic
 
 
 def get_special_kwargs(fname: str) -> dict:
@@ -27,7 +26,7 @@ class TestFunctionOutputs:
     """Test consistency of deterministic functions between implementations."""
 
 
-    @pytest.fixture(params=all_fnames, ids=all_fnames)
+    @pytest.fixture(params=deterministic_fnames, ids=deterministic_fnames)
     def fname(self, request):
         return request.param
 
@@ -43,7 +42,7 @@ class TestFunctionOutputs:
         input_dim = info["input_dim"]
         input_range = info["input_range"] if not scale01 else None
 
-        X = lhs.sample(NUM_SAMPLES, input_dim, input_range)
+        X = lhs.sample(1000, input_dim, input_range)
         kwargs = get_special_kwargs(fname)
 
         y_r  = duq_r .duq(X=X, f=fname, scale01=scale01, **kwargs)
@@ -78,7 +77,7 @@ class TestEdgeCases:
     """Test boundary conditions and edge cases."""
 
 
-    @pytest.fixture(params=all_fnames, ids=all_fnames)
+    @pytest.fixture(params=deterministic_fnames, ids=deterministic_fnames)
     def fname(self, request):
         return request.param
 
@@ -125,7 +124,7 @@ class TestEdgeCases:
 
     def test_invalid_shapes(self):
         """Verify invalid input shapes raise value errors."""
-        fname = np.random.choice(all_fnames)
+        fname = np.random.choice(deterministic_fnames)
         info = duq_py.quack(fname)
         X_too_large = lhs.sample(1, info["input_dim"] + 1)
         with pytest.raises(ValueError):

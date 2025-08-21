@@ -62,6 +62,7 @@ class TestQuackMetadata:
             else:
                 assert val_r == val_py, f"{fname}.{key}: {val_r!r} != {val_py!r}"
 
+
     def test_input_dim_and_range_agree(self, fname):
         """Verify that the `input_dim` = length(`input_range`)"""
         info = duq_py.quack(fname)
