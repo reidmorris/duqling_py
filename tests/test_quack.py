@@ -1,5 +1,4 @@
 """Test function metadata queried using the `quack` method."""
-
 import numpy as np
 import pytest
 

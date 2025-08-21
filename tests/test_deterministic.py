@@ -1,5 +1,4 @@
 """Tests for deterministic functions in Duqling implementations."""
-import os
 import numpy as np
 import pytest
 
