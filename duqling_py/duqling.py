@@ -2,36 +2,40 @@
 A Python interface that acts identically to the original Duqling package written in R.
 """
 
-from typing import Optional, Callable
+from typing import Callable, Optional
+
 import numpy as np
 import pandas as pd
 
-from duqling_py.utils import quack
 from duqling_py import functions
+from duqling_py.utils import quack
+
 
 class Duqling:
     """
     Represents an interface that allows the R Duqling package to be callable in Python.
     """
+
     def __init__(self):
         """Initialize the duqling interface."""
 
-    def quack(self,
-              fname:         Optional[str]  = None,
-              input_dim:     Optional[int]  = None,
-              input_cat:     Optional[bool] = None,
-              response_type: Optional[str]  = None,
-              stochastic:    Optional[str]  = None,
-              sorted:                 bool  = True
-              ) -> pd.DataFrame:
+    def quack(
+        self,
+        fname: Optional[str] = None,
+        input_dim: Optional[int] = None,
+        input_cat: Optional[bool] = None,
+        response_type: Optional[str] = None,
+        stochastic: Optional[str] = None,
+        sorted: bool = True,
+    ) -> pd.DataFrame:
         """
         Retrieve information about a function, or query for all functions that meet some criteria.
         """
         args = locals()
-        args.pop('self')
+        args.pop("self")
         return quack(**args)
 
-    def duq(self, X:np.array, f:Callable|str, **kwargs) -> np.array:
+    def duq(self, X: np.array, f: Callable | str, **kwargs) -> np.array:
         """
         Call functions from the duqling namespace on a batch of samples.
 
@@ -46,7 +50,7 @@ class Duqling:
             raise ValueError(f"`X` must be 2D array-like, got ndim={X.ndim}")
         if isinstance(f, str):
             input_length = X.shape[1]
-            expected_length = self.quack(f)['input_dim']
+            expected_length = self.quack(f)["input_dim"]
             if input_length != expected_length:
                 raise ValueError(
                     f"{f} expects samples of length {expected_length}, "

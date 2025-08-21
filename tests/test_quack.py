@@ -1,4 +1,5 @@
 """Test function metadata queried using the `quack` method."""
+
 import numpy as np
 import pytest
 
@@ -24,10 +25,9 @@ class TestQuackMetadata:
     def fname(self, request):
         return request.param
 
-
     def test_fnames_match(self):
         """Verify that the test functions form a 1:1 correspondence between implementations"""
-        duqling_funcs_r  = set(duq_r .quack().fname)
+        duqling_funcs_r = set(duq_r.quack().fname)
         duqling_funcs_py = set(duq_py.quack().fname)
         assert duqling_funcs_r == duqling_funcs_py, (
             "Missing function implementations:\n"
@@ -35,10 +35,9 @@ class TestQuackMetadata:
             f"  Py: {duqling_funcs_r  - duqling_funcs_py}"
         )
 
-
     def test_keys_match(self, fname):
         """Verify metadata keys are identical."""
-        info_r  = normalize_quack_info(duq_r .quack(fname))
+        info_r = normalize_quack_info(duq_r.quack(fname))
         info_py = normalize_quack_info(duq_py.quack(fname))
 
         assert info_r.keys() == info_py.keys(), (
@@ -47,25 +46,25 @@ class TestQuackMetadata:
             f"  Py-only: {info_py.keys() -  info_r.keys()}"
         )
 
-
     def test_values_match(self, fname):
         """Verify metadata values are equivalent."""
-        info_r  = normalize_quack_info(duq_r .quack(fname))
+        info_r = normalize_quack_info(duq_r.quack(fname))
         info_py = normalize_quack_info(duq_py.quack(fname))
 
         for key, val_r in info_r.items():
             val_py = info_py[key]
 
             if isinstance(val_r, np.ndarray):
-                assert np.allclose(val_r, val_py, rtol=1e-10), f"{fname}.{key}: arrays differ"
+                assert np.allclose(
+                    val_r, val_py, rtol=1e-10
+                ), f"{fname}.{key}: arrays differ"
             else:
                 assert val_r == val_py, f"{fname}.{key}: {val_r!r} != {val_py!r}"
-
 
     def test_input_dim_and_range_agree(self, fname):
         """Verify that the `input_dim` = length(`input_range`)"""
         info = duq_py.quack(fname)
-        assert info['input_dim'] == len(info['input_range']), (
+        assert info["input_dim"] == len(info["input_range"]), (
             f"{fname} input dim ({info['input_dim']}) does not match"
             f"the number of input ranges ({len(info['input_range'])})"
         )

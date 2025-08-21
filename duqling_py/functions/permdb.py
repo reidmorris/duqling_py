@@ -1,5 +1,7 @@
 import numpy as np
+
 from ..utils import register_function
+
 
 def permdb(x, scale01=True, d=16, beta=0.5):
     x = np.asarray(x, dtype=np.float64).copy()
@@ -11,16 +13,19 @@ def permdb(x, scale01=True, d=16, beta=0.5):
     jj = np.tile(ii, (d, 1))
     xxmat = np.tile(x[:d], (d, 1))
 
-    inner = np.sum((jj**ii[:, None] + beta) * ((xxmat / jj)**ii[:, None] - 1), axis=1)
+    inner = np.sum(
+        (jj ** ii[:, None] + beta) * ((xxmat / jj) ** ii[:, None] - 1), axis=1
+    )
     outer = np.sum(inner**2)
 
-    return outer / (d**(2 * d + 1))
+    return outer / (d ** (2 * d + 1))
+
 
 register_function(
-    fname='permdb',
+    fname="permdb",
     input_dim=16,
     input_cat=False,
-    response_type='uni',
-    stochastic='n',
-    input_range=np.tile([-16, 16], (16, 1))
+    response_type="uni",
+    stochastic="n",
+    input_range=np.tile([-16, 16], (16, 1)),
 )

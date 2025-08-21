@@ -4,6 +4,7 @@ Port of `pollutant()` from pollutant.R
 """
 
 from __future__ import annotations
+
 import numpy as np
 from numpy.typing import ArrayLike
 
@@ -11,10 +12,12 @@ from ..utils import register_function
 
 # ‑‑ parameter ranges used when scale01 = True (rows = variables) ‑‑
 _RR = np.array(
-    [[7.00, 13.00],     # M   : mass of pollutant [kg] spilled at each site
-     [0.02, 0.12],      # D   : diffusion rate     [m² s⁻¹]
-     [0.01, 3.00],      # L   : location of 2nd spill [m]
-     [30.01, 30.295]]   # tau : time of 2nd spill    [s]
+    [
+        [7.00, 13.00],  # M   : mass of pollutant [kg] spilled at each site
+        [0.02, 0.12],  # D   : diffusion rate     [m² s⁻¹]
+        [0.01, 3.00],  # L   : location of 2nd spill [m]
+        [30.01, 30.295],
+    ]  # tau : time of 2nd spill    [s]
 )
 
 
@@ -33,12 +36,14 @@ def _default_space_time(space, time):
     return space, time
 
 
-def pollutant(x: ArrayLike,
-              /,
-              *,
-              scale01: bool = True,
-              space: ArrayLike | None = None,
-              time: ArrayLike | None = None):
+def pollutant(
+    x: ArrayLike,
+    /,
+    *,
+    scale01: bool = True,
+    space: ArrayLike | None = None,
+    time: ArrayLike | None = None,
+):
     """
     Concentration field produced by two instantaneous spills in a 1-D channel.
 
@@ -55,8 +60,8 @@ def pollutant(x: ArrayLike,
 
     Returns
     -------
-    • If ``len(space) == len(time) == 1`` → float  
-    • If exactly one of them has length 1 → 1-D array  
+    • If ``len(space) == len(time) == 1`` → float
+    • If exactly one of them has length 1 → 1-D array
     • Otherwise → 2-D array shaped (len(space), len(time))
 
     Notes
@@ -83,15 +88,19 @@ def pollutant(x: ArrayLike,
     s_mat, t_mat = np.meshgrid(space, time, indexing="ij")  # rows = s, cols = t
 
     # first spill at s = 0, t = 0 (but R reference shifts time by 30 s)
-    term1 = M / np.sqrt(4.0 * np.pi * D * t_mat) * np.exp(
-        -s_mat**2 / (4.0 * D * t_mat))
+    term1 = (
+        M / np.sqrt(4.0 * np.pi * D * t_mat) * np.exp(-(s_mat**2) / (4.0 * D * t_mat))
+    )
 
     # second spill, only contributes when t > tau
     mask = t_mat > tau
     term2 = np.zeros_like(term1)
     dt = t_mat[mask] - tau
-    term2[mask] = M / np.sqrt(4.0 * np.pi * D * dt) * np.exp(
-        -(s_mat[mask] - L)**2 / (4.0 * D * dt))
+    term2[mask] = (
+        M
+        / np.sqrt(4.0 * np.pi * D * dt)
+        * np.exp(-((s_mat[mask] - L) ** 2) / (4.0 * D * dt))
+    )
 
     C = np.sqrt(4.0 * np.pi) * (term1 + term2)
 
@@ -102,7 +111,7 @@ def pollutant(x: ArrayLike,
         return C[0, :]
     if C.shape[1] == 1:
         return C[:, 0]
-    return C.T.flatten('F')
+    return C.T.flatten("F")
 
 
 # Register function with metadata
@@ -112,10 +121,7 @@ register_function(
     input_cat=False,
     response_type="func",
     stochastic="n",
-    input_range=np.array([
-        [7, 13],        # M
-        [0.02, 0.12],   # D
-        [0.01, 3],      # L
-        [30.01, 30.295] # tau
-    ])
+    input_range=np.array(
+        [[7, 13], [0.02, 0.12], [0.01, 3], [30.01, 30.295]]  # M  # D  # L  # tau
+    ),
 )
