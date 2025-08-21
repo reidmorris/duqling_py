@@ -1,0 +1,26 @@
+# documentation
+include README.md
+include LICENSE
+
+# configuration files
+include pyproject.toml
+include requirements.txt
+include requirements-dev.txt
+
+# tests
+recursive-include tests *.py
+recursive-include tests *.ipynb
+
+# compiled files and caches
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude .pytest_cache
+global-exclude *.egg-info
+
+# development files
+exclude .gitignore
+exclude *.yml
+exclude *.yaml
+exclude tox.ini
