@@ -678,45 +678,46 @@ def _fk_simulator(domain, sites, U, V, KX, KY, OXY, NPATHS, rng: np.random.Gener
     lam = 1e-11
     
     OUT = np.zeros((NOBS, NPATHS))
-    
+
+    sigx = np.sqrt(2 * KX * HH)
+    sigy = np.sqrt(2 * KY * HH)
+
     for i in range(NOBS):
         for kk in range(NPATHS):
             xc = sites[i, 0]
             yc = sites[i, 1]
-            
+
             tau = 0
             while ((xc - domain[0]) * (xc - domain[1]) < 0) and ((yc - domain[2]) * (yc - domain[3]) < 0):
                 # Find grid indices
                 jx = int(np.ceil((xc - domain[0]) / delx))
                 ix = int(np.ceil((yc - domain[2]) / dely))
-                
+
                 # Ensure indices are within bounds
-                jx = min(jx, N)
-                jx = 1 if jx<=0 else jx
-                ix = min(ix, M)
-                ix = 1 if ix<=0 else ix
-                
+                jx = np.clip(jx, 1, N)
+                ix = np.clip(ix, 1, M)
+
                 # Get velocity at current location
-                uc = U[ix, jx]
-                vc = V[ix, jx]
-                
+                uc = U[ix - 1, jx - 1]
+                vc = V[ix - 1, jx - 1]
+
                 # Euler step with random diffusion
-                xn = xc + HH * uc + np.sqrt(HH) * np.sqrt(2 * KX) * rng.normal()
-                yn = yc + HH * vc + np.sqrt(HH) * np.sqrt(2 * KY) * rng.normal()
-                
+                xn = xc + HH * uc + sigx * rng.normal()
+                yn = yc + HH * vc + sigy * rng.normal()
+
                 xc = xn
                 yc = yn
                 tau += HH
-            
+
             # Find final grid indices
             JJ = int(np.ceil((xc - domain[0]) / delx))
             II = int(np.ceil((yc - domain[2]) / dely))
-            
+
             # Ensure indices are within bounds
-            JJ = max(0, min(JJ, N-1))
-            II = max(0, min(II, M-1))
-            
-            OUT[i, kk] = OXY[II, JJ] * np.exp(-lam * tau)
+            JJ = np.clip(JJ, 1, N)
+            II = np.clip(II, 1, M)
+
+            OUT[i, kk] = OXY[II - 1, JJ - 1] * np.exp(-lam * tau)
     
     return OUT
 
