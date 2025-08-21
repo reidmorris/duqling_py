@@ -1,0 +1,24 @@
+-r requirements.txt # include production requirements
+
+# testing
+pytest>=6.0.0
+pytest-cov>=2.12.0
+
+# style
+black>=21.0.0 # code formatter
+isort>=5.9.0  # sorts and organizes imports
+flake8>=3.9.0 # linter
+mypy>=0.910   # static type checker
+
+# documentation
+sphinx>=4.0.0  # builds HTML docs from docstrs
+sphinx-rtd-theme>=1.0.0  # clean doc theme
+
+# Jupyter (for rapid testing and visualization)
+jupyter>=1.0.0
+notebook>=6.4.0
+plotly>=5.0.0  # for 3D plotting notebook
+
+# Build tools
+build>=0.7.0
+twine>=3.4.0
