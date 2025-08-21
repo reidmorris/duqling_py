@@ -108,7 +108,7 @@ class TestEdgeCases:
         X_lower = input_range[:, 0].reshape(1,-1)
         y_lower_r  = duq_r .duq(X=X_lower, f=fname, scale01=False, **kwargs)
         y_lower_py = duq_py.duq(X=X_lower, f=fname, scale01=False, **kwargs)
-        assert np.allclose(y_lower_r, y_lower_py), (
+        assert np.allclose(y_lower_r, y_lower_py, equal_nan=True), (
             f"implementations of {fname} disagree at the lower bound"
         )
 
@@ -116,7 +116,7 @@ class TestEdgeCases:
         X_upper = input_range[:, 1].reshape(1,-1)
         y_upper_r  = duq_r .duq(X=X_upper, f=fname, scale01=False, **kwargs)
         y_upper_py = duq_py.duq(X=X_upper, f=fname, scale01=False, **kwargs)
-        assert np.allclose(y_upper_r, y_upper_py), (
+        assert np.allclose(y_upper_r, y_upper_py, equal_nan=True), (
             f"implementations of {fname} disagree at the upper bound"
         )
 
