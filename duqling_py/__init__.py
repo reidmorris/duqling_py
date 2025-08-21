@@ -7,6 +7,9 @@ to scale inputs from [0,1] to their native parameter ranges.
 """
 
 __version__ = "0.1.0"
+__author__ = "Reid Morris; Triad National Security, LLC"
+__license__ = "GPL-3"
+__copyright__ = "Copyright 2024. Triad National Security, LLC. All rights reserved."
 
 from .duqling import Duqling
 
